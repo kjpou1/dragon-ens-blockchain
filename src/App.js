@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import "./styles/App.css";
 //import twitterLogo from "./assets/twitter-logo.svg";
 import { ethers } from "ethers";
@@ -361,7 +361,7 @@ const App = () => {
     setDomain(name);
   };
 
-  const fetchMints = async () => {
+  const fetchMints = useCallback(async () => {
     try {
       const { ethereum } = window;
       if (ethereum && currentAccount) {
@@ -397,14 +397,14 @@ const App = () => {
     } catch (error) {
       console.log(error);
     }
-  };
+  }, [currentAccount]);
 
   // This will run any time currentAccount or network are changed
   useEffect(() => {
     if (network === "Polygon Mumbai Testnet") {
       fetchMints();
     }
-  }, [currentAccount, network]);
+  }, [currentAccount, network, fetchMints]);
 
   // This runs our function when the page loads.
   useEffect(() => {
